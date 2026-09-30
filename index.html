@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070810">
+<title>Con amor ✨</title>
+<style>
+  :root{
+    --night:#070810;
+    --night2:#111327;
+    --cream:#fff8f2;
+    --soft:rgba(255,248,242,.72);
+    --pink:#ffb0c8;
+    --lav:#cab9ff;
+    --gold:#ffe6a7;
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;min-height:100%;background:var(--night);color:var(--cream)}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
+    overflow-x:hidden;
+    background:
+      radial-gradient(circle at 50% -10%, rgba(182,162,255,.18), transparent 34%),
+      radial-gradient(circle at 18% 28%, rgba(255,136,176,.10), transparent 28%),
+      radial-gradient(circle at 82% 68%, rgba(107,193,199,.09), transparent 28%),
+      linear-gradient(180deg,#070810 0%,#0d1020 45%,#090b16 100%);
+  }
+
+  #sky{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  .veil{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+      linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.15)),
+      radial-gradient(circle at center, transparent 35%, rgba(0,0,0,.24) 100%);
+  }
+
+  main{position:relative;z-index:2}
+
+  .scene{
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:42px 24px calc(48px + env(safe-area-inset-bottom));
+    text-align:center;
+    position:relative;
+  }
+
+  .scene-inner{
+    width:min(700px,100%);
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 1.3s ease,transform 1.3s ease;
+  }
+
+  .scene.visible .scene-inner{
+    opacity:1;
+    transform:none;
+  }
+
+  .tiny{
+    font-size:13px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.45);
+    margin-bottom:18px;
+  }
+
+  .name{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(76px,20vw,150px);
+    line-height:.85;
+    font-weight:400;
+    letter-spacing:-.06em;
+    margin:0;
+    background:linear-gradient(115deg,#fff,#ffd0df 42%,#d5c8ff 78%,#fff2bf);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:0 0 42px rgba(255,176,200,.07);
+  }
+
+  .intro{
+    margin:28px auto 0;
+    max-width:560px;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(21px,5.2vw,29px);
+    line-height:1.5;
+    font-weight:400;
+    color:rgba(255,248,242,.82);
+  }
+
+  .whisper{
+    margin:24px auto 0;
+    max-width:540px;
+    color:var(--soft);
+    font-size:17px;
+    line-height:1.7;
+  }
+
+  .moon-wrap{
+    width:150px;
+    height:150px;
+    margin:0 auto 34px;
+    position:relative;
+    display:grid;
+    place-items:center;
+  }
+
+  .moon{
+    width:94px;
+    height:94px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 32%,#fffdf7 0 18%,#fff4d6 50%,#ead9aa 100%);
+    box-shadow:
+      0 0 28px rgba(255,236,173,.26),
+      0 0 70px rgba(255,236,173,.14),
+      0 0 130px rgba(255,236,173,.08);
+    cursor:pointer;
+    position:relative;
+  }
+
+  .moon::after{
+    content:"";
+    position:absolute;
+    width:18px;height:18px;border-radius:50%;
+    background:rgba(180,160,115,.13);
+    top:24px;left:20px;
+    box-shadow:33px 15px 0 rgba(180,160,115,.09),17px 40px 0 rgba(180,160,115,.08);
+  }
+
+  .orbit{
+    position:absolute;
+    inset:0;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:50%;
+    animation:spin 14s linear infinite;
+  }
+  .orbit::before{
+    content:"✦";
+    position:absolute;
+    top:-9px;left:50%;
+    color:#fff6cc;
+    font-size:16px;
+    text-shadow:0 0 12px #fff1ae;
+  }
+
+  .magic-quote{
+    max-width:650px;
+    margin:auto;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(34px,9vw,68px);
+    line-height:1.08;
+    letter-spacing:-.035em;
+    font-weight:400;
+  }
+
+  .magic-quote em{
+    font-style:normal;
+    background:linear-gradient(105deg,#fff,#ffd0df 45%,#d9ceff 78%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .flower-garden{
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    gap:12px;
+    height:120px;
+    margin:36px auto 0;
+  }
+
+  .flower{
+    font-size:clamp(30px,8vw,48px);
+    animation:sway 3.6s ease-in-out infinite;
+    transform-origin:bottom center;
+    filter:drop-shadow(0 0 12px rgba(255,160,190,.16));
+    cursor:pointer;
+  }
+  .flower:nth-child(2){animation-delay:-.8s}
+  .flower:nth-child(3){animation-delay:-1.6s}
+  .flower:nth-child(4){animation-delay:-2.4s}
+  .flower:nth-child(5){animation-delay:-.4s}
+
+  .message{
+    max-width:600px;
+    margin:auto;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(26px,6.8vw,42px);
+    line-height:1.45;
+    font-weight:400;
+  }
+
+  .message small{
+    display:block;
+    margin-top:26px;
+    color:var(--soft);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;
+    font-size:16px;
+    line-height:1.7;
+    font-weight:400;
+  }
+
+  .final-heart{
+    font-size:74px;
+    margin-bottom:28px;
+    animation:pulse 2.2s ease-in-out infinite;
+    filter:drop-shadow(0 0 30px rgba(255,110,160,.25));
+    cursor:pointer;
+  }
+
+  .final-text{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(31px,8vw,54px);
+    line-height:1.25;
+    max-width:640px;
+    margin:auto;
+  }
+
+  .signature{
+    margin-top:30px;
+    color:rgba(255,255,255,.58);
+    font-size:15px;
+    letter-spacing:.03em;
+  }
+
+  .hint{
+    position:absolute;
+    bottom:calc(22px + env(safe-area-inset-bottom));
+    left:50%;
+    transform:translateX(-50%);
+    color:rgba(255,255,255,.36);
+    font-size:12px;
+    letter-spacing:.05em;
+    white-space:nowrap;
+    animation:breathe 2.4s ease-in-out infinite;
+  }
+
+  .falling,.spark{
+    position:fixed;
+    pointer-events:none;
+    z-index:20;
+  }
+
+  .falling{animation:fall 4.2s ease-out forwards}
+  .spark{animation:pop 1.25s ease-out forwards}
+
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes sway{
+    0%,100%{transform:rotate(-4deg) translateY(0)}
+    50%{transform:rotate(4deg) translateY(-5px)}
+  }
+  @keyframes pulse{50%{transform:scale(1.08)}}
+  @keyframes breathe{50%{opacity:.7;transform:translateX(-50%) translateY(-4px)}}
+  @keyframes fall{
+    0%{opacity:0;transform:translateY(-30px) rotate(0)}
+    12%{opacity:1}
+    100%{opacity:0;transform:translateY(112vh) translateX(55px) rotate(280deg)}
+  }
+  @keyframes pop{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.35)}
+    18%{opacity:1}
+    100%{opacity:0;transform:translate(-50%,-110px) scale(1.55) rotate(25deg)}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+  }
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<div class="veil"></div>
+
+<main>
+  <section class="scene visible" id="s1">
+    <div class="scene-inner">
+      <div class="tiny">Para alguien que ya trae su propia luz</div>
+      <h1 class="name">Tania</h1>
+      <p class="intro">
+        Hay personas que no necesitan hacer demasiado para volver bonito un momento.
+      </p>
+      <p class="whisper">
+        Tú eres una de ellas. ✨
+      </p>
+    </div>
+    <div class="hint">desliza despacio ↓</div>
+  </section>
+
+  <section class="scene" id="s2">
+    <div class="scene-inner">
+      <div class="moon-wrap">
+        <div class="orbit"></div>
+        <div class="moon" id="moon"></div>
+      </div>
+      <p class="message">
+        Algunas personas llegan como ruido.<br>
+        Otras llegan como calma.<br><br>
+        Tú tienes algo distinto.
+        <small>Toca la luna ✨</small>
+      </p>
+    </div>
+  </section>
+
+  <section class="scene" id="s3">
+    <div class="scene-inner">
+      <div class="tiny">Y entonces recordé tu frase</div>
+      <div class="magic-quote">
+        “Quien tiene <em>magia</em><br>
+        no ocupa trucos.”
+      </div>
+
+      <div class="flower-garden">
+        <div class="flower">🌷</div>
+        <div class="flower">🌸</div>
+        <div class="flower">🌹</div>
+        <div class="flower">🌺</div>
+        <div class="flower">🌼</div>
+      </div>
+
+      <p class="whisper">
+        Y sí… creo que hay frases que describen a una persona mejor de lo que imaginamos.
+      </p>
+    </div>
+  </section>
+
+  <section class="scene" id="s4">
+    <div class="scene-inner">
+      <p class="message">
+        Ojalá nunca pierdas esa forma tuya de llenar de color los días normales.
+        <small>
+          Que sigas riendo fuerte, disfrutando lo que amas, llenando espacios de flores
+          y haciendo especial lo sencillo. 🌸
+        </small>
+      </p>
+    </div>
+  </section>
+
+  <section class="scene" id="s5">
+    <div class="scene-inner">
+      <div class="final-heart" id="heart">💖</div>
+      <div class="final-text">
+        No era una fecha especial.<br><br>
+        Simplemente pensé en ti.
+      </div>
+      <div class="signature">
+        Y eso me pareció razón suficiente. ✨
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Aparición suave de escenas al desplazarse
+  const scenes = document.querySelectorAll('.scene');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: .35 });
+  scenes.forEach(s => observer.observe(s));
+
+  // Magia al tocar la luna
+  document.getElementById('moon').addEventListener('click', e => {
+    sparkle(e.clientX || innerWidth/2, e.clientY || innerHeight/2, 26);
+    petals(14);
+  });
+
+  // Flores interactivas
+  document.querySelectorAll('.flower').forEach(f => {
+    f.addEventListener('click', e => {
+      sparkle(e.clientX || innerWidth/2, e.clientY || innerHeight/2, 10);
+    });
+  });
+
+  document.getElementById('heart').addEventListener('click', e => {
+    sparkle(e.clientX || innerWidth/2, e.clientY || innerHeight/2, 28);
+    petals(24);
+  });
+
+  function petals(n=12){
+    const chars=['🌸','🌷','🌹','✨','♡'];
+    for(let i=0;i<n;i++){
+      const el=document.createElement('span');
+      el.className='falling';
+      el.textContent=chars[Math.floor(Math.random()*chars.length)];
+      el.style.left=(Math.random()*100)+'vw';
+      el.style.top=(-40-Math.random()*120)+'px';
+      el.style.fontSize=(15+Math.random()*16)+'px';
+      el.style.animationDelay=(Math.random()*.9)+'s';
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),5200);
+    }
+  }
+
+  function sparkle(x,y,n=14){
+    const chars=['✦','✧','✨','♡','·'];
+    for(let i=0;i<n;i++){
+      const el=document.createElement('span');
+      el.className='spark';
+      el.textContent=chars[Math.floor(Math.random()*chars.length)];
+      el.style.left=(x+(Math.random()-.5)*110)+'px';
+      el.style.top=(y+(Math.random()-.5)*70)+'px';
+      el.style.fontSize=(12+Math.random()*14)+'px';
+      el.style.animationDelay=(Math.random()*.16)+'s';
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),1500);
+    }
+  }
+
+  // Cielo estrellado / luciérnagas
+  const canvas=document.getElementById('sky');
+  const ctx=canvas.getContext('2d');
+  let particles=[];
+  let dpr=Math.min(window.devicePixelRatio||1,2);
+
+  function resize(){
+    canvas.width=innerWidth*dpr;
+    canvas.height=innerHeight*dpr;
+    canvas.style.width=innerWidth+'px';
+    canvas.style.height=innerHeight+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    const count=Math.min(95,Math.floor(innerWidth*innerHeight/7800));
+    particles=Array.from({length:count},()=>({
+      x:Math.random()*innerWidth,
+      y:Math.random()*innerHeight,
+      r:Math.random()*1.25+.25,
+      a:Math.random()*.55+.12,
+      speed:Math.random()*.004+.0015,
+      phase:Math.random()*Math.PI*2
+    }));
+  }
+
+  function draw(t=0){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    particles.forEach(p=>{
+      const alpha=p.a + Math.sin(t*p.speed+p.phase)*.18;
+      ctx.beginPath();
+      ctx.fillStyle=`rgba(255,248,220,${Math.max(.05,alpha)})`;
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize',resize);
+  resize();
+  requestAnimationFrame(draw);
+
+  // Un poco de magia al entrar
+  setTimeout(()=>petals(8),700);
+</script>
+</body>
+</html>
